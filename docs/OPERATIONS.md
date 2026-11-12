@@ -76,7 +76,7 @@ Kept in two places; never in the repository or in chat.
 |---|---|---|
 | Sign-up code | VM settings file | new users creating accounts |
 | Modal proxy token (`MODAL_KEY`, `MODAL_SECRET`) | VM settings file | the front door reaching the engines |
-| `VM_HOST`, `VM_USER`, `VM_SSH_KEY` | GitHub → Settings → Secrets → Actions | the Deploy workflow updating the VM |
+| `VM_HOST`, `VM_SSH_KEY` | GitHub → Settings → Secrets → Actions | the Deploy workflow updating the VM |
 | `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET` | GitHub → Settings → Secrets → Actions | the Deploy workflow updating running engines |
 
 To replace a leaked or departed person's token: create a new one, update it

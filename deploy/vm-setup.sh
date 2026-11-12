@@ -145,7 +145,6 @@ cat <<EOF
  variables → Actions → New repository secret
 
    VM_HOST      $DOMAIN
-   VM_USER      medcomms
    VM_SSH_KEY   (everything between the lines below, including them)
 
 $KEY_TEXT
