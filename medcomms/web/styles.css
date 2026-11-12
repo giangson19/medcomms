@@ -1,0 +1,1265 @@
+/* MedComms speaker page: light and friendly, VinUni colours, phone first. */
+
+:root {
+    --blue: #2e548a;
+    --blue-strong: #1f3f6e;
+    --blue-mid: #4890bd;
+    --blue-soft: #e8f0fb;
+    --blue-tint: #f3f7fd;
+    --teal: #3fb8c4;
+    --teal-ink: #17707a;
+    --teal-soft: #e3f6f8;
+    --teal-tint: #f1fafb;
+    --red: #e5484d;
+    --gold: #f5b301;
+
+    --bg-top: #f3f8ff;
+    --bg-bottom: #eef8f9;
+    --surface: #ffffff;
+    --surface-2: #f5f8fc;
+    --text: #1b2533;
+    --text-2: #4e5b6d;
+    --text-3: #8592a3;
+    --border: #e1e8f1;
+    --shadow: 0 1px 2px rgba(31, 63, 110, 0.05), 0 10px 30px rgba(31, 63, 110, 0.08);
+
+    --radius: 22px;
+    --radius-sm: 14px;
+    --gutter: 46px; /* between the two panes; the swap button sits in it */
+    --controls-height: 150px; /* space kept free for the phone's bottom bar */
+    color-scheme: light;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+    background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%) fixed;
+}
+
+a {
+    color: var(--blue-mid);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 2px;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.55rem 1.15rem;
+    font: inherit;
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    color: #fff;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
+    box-shadow: 0 6px 16px rgba(46, 84, 138, 0.25);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 20px rgba(46, 84, 138, 0.32);
+}
+
+.btn-quiet {
+    color: var(--blue);
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+.btn-quiet:hover {
+    background: var(--blue-soft);
+}
+
+.btn-link {
+    padding: 0.25rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--blue-mid);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: calc(0.6rem + env(safe-area-inset-top)) 1rem 0.6rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: saturate(1.5) blur(12px);
+    -webkit-backdrop-filter: saturate(1.5) blur(12px);
+    border-bottom: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.brand-mark {
+    display: block;
+    flex: none;
+    width: 36px;
+    height: 36px;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.2;
+}
+
+.brand-line {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.brand-name {
+    font-size: 1.15rem;
+    font-weight: 750;
+    color: var(--blue);
+    letter-spacing: -0.01em;
+}
+
+.brand-tagline {
+    overflow: hidden;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--teal-ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tag {
+    padding: 0.12rem 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 650;
+    color: var(--teal-ink);
+    background: var(--teal-soft);
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.account,
+.user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-name {
+    max-width: 9rem;
+    overflow: hidden;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-2);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Interface language: a small VI | EN switch. */
+.ui-lang {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+}
+
+.ui-lang button {
+    min-width: 36px;
+    min-height: 30px;
+    padding: 0 0.55rem;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-3);
+    background: none;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.ui-lang button[aria-pressed="true"] {
+    color: #fff;
+    background: var(--blue);
+}
+
+.account .btn {
+    min-height: 38px;
+    padding: 0.35rem 0.95rem;
+    font-size: 0.9rem;
+}
+
+/* Phones: two rows. The mark, the name and the account buttons on top; the
+   tagline gets the full width underneath instead of being squeezed. */
+@media (max-width: 700px) {
+    .topbar {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-areas:
+            "mark name account"
+            "mark tagline uilang";
+        column-gap: 0.55rem;
+        row-gap: 0.1rem;
+        padding-bottom: 0.45rem;
+    }
+
+    .brand,
+    .brand-text {
+        display: contents;
+    }
+
+    .brand-mark {
+        grid-area: mark;
+        width: 32px;
+        height: 32px;
+    }
+
+    .brand-line {
+        grid-area: name;
+    }
+
+    .tag {
+        display: none;
+    }
+
+    .brand-tagline {
+        grid-area: tagline;
+        font-size: 0.74rem;
+        line-height: 1.25;
+        white-space: normal;
+    }
+
+    .account {
+        display: contents;
+    }
+
+    .ui-lang {
+        grid-area: uilang;
+        justify-self: end;
+    }
+
+    .ui-lang button {
+        min-height: 24px;
+        font-size: 0.74rem;
+    }
+
+    #login-btn,
+    .user {
+        grid-area: account;
+        justify-self: end;
+    }
+
+    .user {
+        gap: 0.35rem;
+    }
+
+    .user-name {
+        max-width: 6rem;
+    }
+
+    .account .btn {
+        padding: 0.35rem 0.8rem;
+    }
+}
+
+/* ---------- Layout ---------- */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 1rem 1rem calc(var(--controls-height) + 1rem + env(safe-area-inset-bottom));
+}
+
+/* ---------- Stage: languages, the transcript, the microphone ---------- */
+
+.stage {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+}
+
+.direction {
+    display: grid;
+    grid-template-columns: 1fr var(--gutter) 1fr;
+    column-gap: 0.6rem;
+    align-items: center;
+}
+
+.lang {
+    padding: 0.6rem 0.5rem;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 999px;
+}
+
+.lang-from {
+    color: var(--blue);
+    background: var(--blue-soft);
+}
+
+.lang-to {
+    color: var(--teal-ink);
+    background: var(--teal-soft);
+}
+
+.swap {
+    display: grid;
+    place-items: center;
+    width: var(--gutter);
+    height: var(--gutter);
+    color: var(--blue);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s, background 0.15s;
+}
+
+.swap:hover {
+    background: var(--blue-soft);
+}
+
+.swap.spin {
+    transform: rotate(180deg);
+}
+
+.swap:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* The transcript: one row per sentence, source and translation side by side. */
+.transcript {
+    display: flex;
+    flex-direction: column;
+    height: clamp(17rem, 46vh, 26rem); /* fixed, so the page does not jump while speaking */
+    overflow-y: auto;
+    border-radius: var(--radius);
+    scroll-behavior: smooth;
+}
+
+.row {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.35rem 0 0.6rem;
+    animation: rise 0.25s ease-out;
+}
+
+/* Phones: the source and its translation as two tinted cards. */
+.half {
+    display: flex;
+    gap: 0.55rem;
+    min-width: 0;
+    min-height: 3rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: var(--radius-sm);
+}
+
+.half-src {
+    background: var(--blue-tint);
+    border: 1px solid var(--blue-soft);
+}
+
+.half-tgt {
+    background: var(--teal-tint);
+    border: 1px solid var(--teal-soft);
+}
+
+/* Phones, before anyone speaks: the two cards fill the box as two equal panes. */
+@media (max-width: 759px) {
+    .row.demo {
+        flex: 1;
+        grid-template-rows: 1fr 1fr;
+    }
+}
+
+.half-flag {
+    flex: none;
+    line-height: 1.6;
+}
+
+.text {
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.55;
+    color: var(--text);
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.text.tgt {
+    font-weight: 600;
+}
+
+/* The sentence being spoken: grey, still changing. */
+.row.live .text {
+    color: var(--text-3);
+}
+
+/* The typed preview before anyone speaks. */
+.row.demo .text {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-3);
+}
+
+.text.typing::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    background: var(--teal);
+    animation: blink 1s steps(1) infinite;
+}
+
+/* Under each half: its rating (and, under the translation, Copy and Correct). */
+.row-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.1rem 0.6rem;
+    padding: 0 0.3rem;
+    font-size: 0.78rem;
+    color: var(--text-3);
+}
+
+/* Phones: stars and buttons a little tighter, to share one line. */
+@media (max-width: 759px) {
+    .row-foot {
+        column-gap: 0.4rem;
+    }
+
+    .row-foot .rating {
+        gap: 0.15rem;
+    }
+
+    .row-foot .star {
+        width: 24px;
+    }
+
+    .row-foot .icon-btn {
+        padding: 0.3rem 0.5rem;
+    }
+}
+
+.foot-tgt .row-actions {
+    margin-left: auto;
+}
+
+.row-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0.3rem 0.7rem;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-2);
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    color: var(--blue);
+    background: var(--blue-soft);
+}
+
+.icon-btn.rated {
+    color: var(--teal-ink);
+}
+
+/* ---------- Microphone ---------- */
+
+/* Phones: pinned to the bottom, within thumb reach. */
+.controls {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1rem calc(0.8rem + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(1.5) blur(14px);
+    -webkit-backdrop-filter: saturate(1.5) blur(14px);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 24px rgba(31, 63, 110, 0.06);
+}
+
+.status:empty {
+    display: none;
+}
+
+.status {
+    min-height: 1.4em;
+    max-width: 34rem;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-2);
+    text-align: center;
+}
+
+/* The server is starting, connecting, …: a badge with a pulsing dot. */
+.status.waiting,
+.status.ready {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    font-weight: 600;
+    text-align: left;
+    border-radius: var(--radius-sm);
+}
+
+.status.waiting {
+    color: #8a5a00;
+    background: #fff4d6;
+}
+
+.status.ready {
+    color: var(--teal-ink);
+    background: var(--teal-soft);
+}
+
+.status.waiting::before,
+.status.ready::before {
+    content: "";
+    flex: none;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+}
+
+.status.waiting::before {
+    background: var(--gold);
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+.status.ready::before {
+    background: #22a06b;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+.mic {
+    position: relative;
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 8px 22px rgba(46, 84, 138, 0.35);
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.2s;
+}
+
+.mic:hover {
+    box-shadow: 0 10px 26px rgba(46, 84, 138, 0.42);
+}
+
+.mic:active {
+    transform: scale(0.96);
+}
+
+.mic svg {
+    position: relative;
+    z-index: 1;
+}
+
+.mic .icon-stop,
+.mic .spinner {
+    display: none;
+}
+
+.mic-level {
+    position: absolute;
+    inset: 0;
+    background: var(--red);
+    border-radius: 50%;
+    opacity: 0.22;
+    transform: scale(1);
+    transition: transform 0.08s linear;
+}
+
+.mic:not(.recording) .mic-level {
+    display: none;
+}
+
+.mic.recording {
+    background: var(--red);
+    box-shadow: 0 8px 22px rgba(229, 72, 77, 0.38);
+}
+
+.mic.recording .icon-mic {
+    display: none;
+}
+
+.mic.recording .icon-stop {
+    display: block;
+}
+
+.mic.connecting {
+    background: linear-gradient(135deg, var(--blue-mid) 0%, var(--teal) 100%);
+    cursor: progress;
+}
+
+.mic.connecting .icon-mic {
+    display: none;
+}
+
+.mic.connecting .spinner {
+    display: block;
+}
+
+.spinner {
+    position: relative;
+    z-index: 1;
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+/* ---------- Desktop: two large panes, the microphone in the source pane ---------- */
+
+@media (min-width: 760px) {
+    .app {
+        padding: 1.25rem 1.5rem 2rem;
+    }
+
+    .stage {
+        position: relative;
+        gap: 0.9rem;
+        padding: 1.25rem 1.25rem 1.1rem;
+    }
+
+    /* Two rounded panes drawn behind the rows, which scroll over them. */
+    .panes {
+        position: relative;
+    }
+
+    .panes::before,
+    .panes::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: calc(50% - var(--gutter) / 2 - 0.6rem);
+        border-radius: var(--radius);
+    }
+
+    .panes::before {
+        left: 0;
+        background: var(--blue-tint);
+        border: 1px solid var(--blue-soft);
+    }
+
+    .panes::after {
+        right: 0;
+        background: var(--teal-tint);
+        border: 1px solid var(--teal-soft);
+    }
+
+    .transcript {
+        position: relative;
+        z-index: 1;
+        height: auto;
+        min-height: 16rem;
+        max-height: min(48vh, 30rem);
+        padding: 0.6rem 0 5.5rem; /* room for the microphone inside the source pane */
+    }
+
+    .row {
+        grid-template-columns: 1fr calc(var(--gutter) + 1.2rem) 1fr;
+        gap: 0.3rem 0;
+        padding: 0.6rem 0;
+    }
+
+    .half {
+        min-height: 0;
+        padding: 0 1.3rem;
+        background: none;
+        border: none;
+        border-radius: 0;
+    }
+
+    .half-src {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .half-tgt {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .foot-src {
+        grid-column: 1;
+        grid-row: 2;
+        padding: 0 1.3rem;
+    }
+
+    .foot-tgt {
+        grid-column: 3;
+        grid-row: 2;
+        padding: 0 0.8rem 0 1.3rem;
+    }
+
+    .correction {
+        grid-column: 3;
+        grid-row: 3;
+        margin: 0 1.3rem;
+    }
+
+    .half-flag {
+        display: none; /* the pane headers say which language is which */
+    }
+
+    .text {
+        font-size: 1.15rem;
+    }
+
+
+    /* The microphone sits at the bottom of the source pane. */
+    .controls {
+        position: absolute;
+        right: auto;
+        bottom: 2rem;
+        left: 2.4rem;
+        z-index: 2;
+        flex-direction: row;
+        gap: 0.9rem;
+        width: calc(50% - var(--gutter) / 2 - 4rem);
+        padding: 0;
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .controls .status {
+        text-align: left;
+    }
+
+    .mic {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* ---------- Clear ---------- */
+
+/* Phones: in the bottom bar, right of the microphone. */
+.clear-btn {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(1.55rem + env(safe-area-inset-bottom));
+    z-index: 21;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 42px;
+    padding: 0.45rem 0.95rem;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--teal-ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    animation: rise 0.2s ease-out;
+}
+
+.clear-btn:hover {
+    background: var(--teal-soft);
+}
+
+.clear-btn[hidden] {
+    display: none;
+}
+
+/* Larger screens: bottom right of the translation pane. */
+@media (min-width: 760px) {
+    .clear-btn {
+        position: absolute;
+        right: 2.3rem;
+        bottom: 2.1rem;
+        z-index: 2;
+    }
+}
+
+/* ---------- Ratings and corrections ---------- */
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.rating-label {
+    font-weight: 600;
+}
+
+.stars {
+    display: flex;
+}
+
+.star {
+    width: 28px;
+    height: 30px;
+    padding: 0;
+    font-size: 1.15rem;
+    line-height: 1;
+    color: #d5dce6;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.1s, transform 0.1s;
+}
+
+.star.on {
+    color: var(--gold);
+}
+
+/* With a mouse: preview the rating under the pointer. */
+@media (hover: hover) {
+    .stars:hover .star {
+        color: #f7c948;
+    }
+
+    .stars:hover .star:hover ~ .star {
+        color: #d5dce6;
+    }
+}
+
+.star:active {
+    transform: scale(1.2);
+}
+
+.correction {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-top: 0.3rem;
+}
+
+.correction[hidden] {
+    display: none;
+}
+
+.correction textarea {
+    flex: 1;
+    min-height: 2.7rem;
+    padding: 0.5rem 0.7rem;
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    resize: vertical;
+}
+
+.correction .btn {
+    min-height: 42px;
+    padding: 0.4rem 1rem;
+    font-size: 0.88rem;
+}
+
+.flash {
+    color: var(--teal-ink);
+}
+
+.rating-label {
+    min-width: 4.2rem; /* "Saved ✓" takes its place without moving the stars */
+}
+
+/* ---------- History ---------- */
+
+.history {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.history-title {
+    margin: 0.4rem 0 0;
+    font-size: 1.05rem;
+    color: var(--blue);
+}
+
+.history-empty {
+    margin: 0;
+    padding: 1.1rem;
+    color: var(--text-3);
+    text-align: center;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+}
+
+#sessions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.session {
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.session-header {
+    margin: 0;
+    padding: 0.6rem 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 650;
+    color: var(--text-2);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+}
+
+/* History rows: two lines (what was said, then its translation) and one
+   line of ratings and actions, on every screen size. */
+.session .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem 1rem;
+    padding: 0.7rem 1.1rem 0.35rem;
+}
+
+.session .row + .row {
+    border-top: 1px solid var(--border);
+}
+
+.session .half {
+    flex: 1 1 100%;
+    min-height: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+}
+
+.session .half-flag {
+    display: block;
+    font-size: 0.95rem;
+}
+
+.session .text {
+    font-size: 1rem;
+}
+
+.session .text.src {
+    color: var(--text-2);
+}
+
+.session .row-foot {
+    padding: 0;
+}
+
+.session .half-src { order: 1; }
+.session .half-tgt { order: 2; }
+.session .foot-src { order: 3; }
+.session .foot-tgt { order: 4; flex: 1 1 auto; }
+.session .correction { order: 5; flex: 1 1 100%; margin: 0; }
+
+/* ---------- Panels (about, log) ---------- */
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.panel summary {
+    padding: 0.95rem 1.1rem;
+    font-weight: 650;
+    color: var(--blue);
+    cursor: pointer;
+    list-style: none;
+}
+
+.panel summary::-webkit-details-marker {
+    display: none;
+}
+
+.panel summary::before {
+    content: "▸";
+    display: inline-block;
+    margin-right: 0.5rem;
+    color: var(--teal);
+    transition: transform 0.15s;
+}
+
+.panel[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.panel.log summary {
+    color: var(--text-2);
+}
+
+.panel-body {
+    padding: 0 1.1rem 1.1rem;
+    font-size: 0.94rem;
+    color: var(--text-2);
+}
+
+.panel-body h3 {
+    margin: 1rem 0 0.4rem;
+    font-size: 0.98rem;
+    color: var(--text);
+}
+
+.refs {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.refs li {
+    margin-bottom: 0.7rem;
+}
+
+.ref-meta {
+    display: block;
+    font-size: 0.86rem;
+    color: var(--text-3);
+}
+
+.log-content {
+    max-height: 240px;
+    overflow-y: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+}
+
+.log-entry {
+    padding: 0.15rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.footer {
+    padding: 0.5rem 0 1rem;
+    font-size: 0.8rem;
+    color: var(--text-3);
+    text-align: center;
+}
+
+/* ---------- Sign-in dialog ---------- */
+
+.auth {
+    width: min(26rem, calc(100vw - 2rem));
+    padding: 0;
+    color: var(--text);
+    background: var(--surface);
+    border: none;
+    border-radius: 24px;
+    box-shadow: 0 24px 60px rgba(31, 63, 110, 0.25);
+}
+
+.auth::backdrop {
+    background: rgba(31, 63, 110, 0.35);
+    backdrop-filter: blur(3px);
+}
+
+.auth-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1.7rem 1.5rem 1.3rem;
+}
+
+.auth-card h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--blue);
+}
+
+.auth-subtitle {
+    margin: 0 0 0.5rem;
+    color: var(--text-2);
+}
+
+.auth-card label {
+    margin-top: 0.3rem;
+    font-size: 0.88rem;
+    font-weight: 650;
+    color: var(--text-2);
+}
+
+.auth-card input {
+    min-height: 46px;
+    padding: 0.6rem 0.85rem;
+    font: inherit;
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.auth-card input:focus {
+    background: var(--surface);
+    border-color: var(--blue-mid);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--blue-soft);
+}
+
+.auth-signup-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.auth-hint {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-3);
+}
+
+.auth-error {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    color: var(--red);
+}
+
+.auth-card .btn-primary {
+    margin-top: 0.75rem;
+}
+
+.auth-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.7rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--text-3);
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.auth-close:hover {
+    background: var(--surface-2);
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

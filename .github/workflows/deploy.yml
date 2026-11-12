@@ -1,0 +1,77 @@
+# Updates the live demo after CI passes on main, or on demand:
+# Actions → Deploy → Run workflow (enter an older commit or tag to roll back).
+#
+# Needs these repository secrets (Settings → Secrets and variables → Actions);
+# a part whose secrets are missing is skipped:
+#   VM_HOST, VM_USER, VM_SSH_KEY        the front door (printed by vm-setup.sh)
+#   MODAL_TOKEN_ID, MODAL_TOKEN_SECRET  the engines on Modal
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Version to deploy (branch, tag or commit)
+        default: main
+
+concurrency:
+  group: deploy
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-24.04
+    env:
+      REF: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.event.workflow_run.head_sha }}
+      VM_HOST: ${{ secrets.VM_HOST }}
+      VM_USER: ${{ secrets.VM_USER }}
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REF }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Update the front door (VM)
+        if: env.VM_HOST != ''
+        env:
+          VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
+        run: |
+          pip install build && python -m build --wheel
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$VM_SSH_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$VM_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          SSH="ssh -i $HOME/.ssh/deploy_key $VM_USER@$VM_HOST"
+          $SSH 'rm -rf ~/release && mkdir ~/release'
+          scp -i ~/.ssh/deploy_key dist/*.whl "$VM_USER@$VM_HOST:release/"
+          $SSH 'set -e
+            ~/venv/bin/pip install --quiet --force-reinstall --no-deps ~/release/*.whl
+            ~/venv/bin/pip install --quiet ~/release/*.whl
+            sudo systemctl restart medcomms'
+          # Check from outside, through HTTPS, like a visitor would.
+          for i in 1 2 3 4 5 6; do
+            curl -fsS "https://$VM_HOST/healthz" && exit 0
+            sleep 5
+          done
+          echo "The front door did not come back up" >&2
+          exit 1
+
+      - name: Update the engines that are on (Modal)
+        if: env.MODAL_TOKEN_ID != ''
+        run: |
+          pip install -e ".[cloud]"
+          medcomms cloud redeploy

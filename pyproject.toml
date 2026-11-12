@@ -1,0 +1,103 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medcomms"
+dynamic = ["version"]
+description = "Research prototype for real-time Vietnamese-English medical speech translation"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+authors = [
+    { name = "VinUniversity College of Engineering and Computer Science" },
+    { name = "VinUniversity College of Health Sciences" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Natural Language :: Vietnamese",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+# The base install is the front door: light enough for a small VM.
+dependencies = [
+    "aiohttp==3.14.5",
+]
+
+[project.optional-dependencies]
+# The translation engine (runs on a GPU, e.g. on Modal).
+engine = [
+    "torch==2.8.0",
+    "torchaudio==2.8.0",
+    "transformers==5.22.2",
+    "peft==0.21.2",
+    "sentencepiece==0.2.1",
+    "faster-whisper==1.2.0",
+    "requests==2.34.2",  # used by faster-whisper but not declared by it
+    "numpy==2.2.3",
+    "opuslib==3.0.1",
+]
+# Managing engines on Modal from a laptop or from GitHub Actions.
+cloud = [
+    "modal==1.6.4",
+]
+dev = [
+    "medcomms[engine,cloud]",
+    "pytest==8.4.1",
+    "pytest-asyncio==1.1.0",
+    "coverage==7.10.3",
+    "ruff==0.12.8",
+    "build==1.3.0",
+]
+
+[project.scripts]
+medcomms = "medcomms.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "medcomms.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["medcomms*"]
+
+[tool.setuptools.package-data]
+medcomms = ["web/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = [
+    # opuslib uses `is not 0`, which warns on Python 3.12+.
+    "ignore:\"is not\" with 'int' literal:SyntaxWarning",
+]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+concurrency = ["multiprocessing", "thread"]
+sigterm = true
+source = ["medcomms"]
+
+[tool.coverage.report]
+exclude_also = [
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+show_missing = true
+precision = 2
+fail_under = 85
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]
