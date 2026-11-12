@@ -3,7 +3,7 @@
 #
 # Needs these repository secrets (Settings → Secrets and variables → Actions);
 # a part whose secrets are missing is skipped:
-#   VM_HOST, VM_USER, VM_SSH_KEY        the front door (printed by vm-setup.sh)
+#   VM_HOST, VM_SSH_KEY                 the front door (printed by vm-setup.sh)
 #   MODAL_TOKEN_ID, MODAL_TOKEN_SECRET  the engines on Modal
 name: Deploy
 
@@ -34,7 +34,9 @@ jobs:
     env:
       REF: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.event.workflow_run.head_sha }}
       VM_HOST: ${{ secrets.VM_HOST }}
-      VM_USER: ${{ secrets.VM_USER }}
+      # Not secret (the setup always creates this user); kept out of secrets so
+      # the word is not masked in the public logs. Override with a variable.
+      VM_USER: ${{ vars.VM_USER || 'medcomms' }}
       MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
       MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
     steps:

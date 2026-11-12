@@ -82,12 +82,11 @@ no setup.
 ## 4. GitHub (~5 minutes)
 
 In the repository on GitHub: **Settings** → **Secrets and variables** →
-**Actions** → **New repository secret**. Add five secrets:
+**Actions** → **New repository secret**. Add four secrets:
 
 | Name | Value |
 |---|---|
 | `VM_HOST` | your address, e.g. `medcomms.example.org` |
-| `VM_USER` | `medcomms` |
 | `VM_SSH_KEY` | the key printed in step 3 (all lines, including `-----BEGIN…` and `-----END…`) |
 | `MODAL_TOKEN_ID` | API token ID from step 1.5 (`ak-…`) |
 | `MODAL_TOKEN_SECRET` | API token secret from step 1.5 (`as-…`) |
